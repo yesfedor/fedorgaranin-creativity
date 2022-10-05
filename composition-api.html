@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+		<title>Composition Api | Fedor Garanin - Reports</title>
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Fedor Garanin">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
+		<link rel="stylesheet" href="/cdn/reveal/reveal.css">
+		<link rel="stylesheet" href="/cdn/reveal/theme/sky.css" id="theme">
+		<link rel="stylesheet" href="/cdn/reveal/plugin/highlight/monokai.css">
+		<style>
+			* {
+				box-sizing: border-box;
+			}
+			.slide-2-progress {
+				display: block;
+				width: 100%;
+				height: 60px;
+				background-color: transparent;
+				border: 6px solid cadetblue;
+			}
+			.slide-2-progress-slides {
+				display: block;
+				max-width: 300px;
+				height: 50px;
+				background-color: cadetblue;
+			}
+			.sdile-2-progress-text {
+				margin-bottom: 1rem;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+			}
+			.sdile-2-progress-text-item {
+				font-size: 2rem;
+				display: block;
+				width: 30%;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<!-- slide:1 -->
+				<section>
+					<span>Composition Api</span>
+					<aside class="notes">
+						<span>
+							Всем привет, эта конференция особенная для меня, потому что это мой первый опыт в докладах и конференциях, поэтому давайте насладимся этим вместе.
+							<br><br>
+							Сегодня я собираюсь поговорить о Composition API во Vue 3, сегодня мы не будем касаться темы о совместимости и различии во Vue 2.
+							<br>
+						</span>
+					</aside>
+				</section>
+
+				<!--slide:2 -->
+				<section>
+					<div class="sdile-2-progress-text">
+						<span class="sdile-2-progress-text-item">Слайды</span>
+						<span class="sdile-2-progress-text-item">Будем кодить</span>
+					</div>
+					<div class="slide-2-progress">
+						<div class="slide-2-progress-slides"></div>
+					</div>
+					<aside class="notes">
+						Да, снова о API-интерфейсе композиции, я знаю, что было много разговоров о нем, и есть подробная документация на русском языке,  но этот доклад немного отличается, потому что я сосредоточусь на практической части и на том, как вы можете использовать API-интерфейс композиции в своем приложении и зачем вам использовать API-интерфейс композиции в вашем приложении.
+						<br><br>
+						Первая короткая часть дока будет слайдами с очень краткими объяснениями некоторых вещей, но мы узнаем больше во второй части моего доклада — на чистом лайв проекте с использованием Vue 3.
+					</aside>
+				</section>
+
+				<!-- slide:3 -->
+				<section>
+					<span>Какую проблему мы хотим решить?</span>
+					<aside class="notes">
+						Главный вопрос, на который я постараюсь ответить, заключается в том, какую проблему мы хотим решить с помощью Composition API, потому что я видел так много ошибок в реализациях.  Должны ли мы использовать его, как основу нашего проекта?
+						<br><br>
+						Я считаю, что есть часть кода, где  Composition API может быть действительно полезным и я постараюсь показать вам это.
+						<br><br>
+						Честно говоря, в нашей базе кода у нас так много мест, где состав API был бы отличным решением, я действительно жду миграции, чтобы опробовать Composition API
+					</aside>
+				</section>
+
+				<!-- sldie:4 -->
+				<section>
+					<span>Если вы никогда не слышали что такое Vue Composition Api...</span>
+					<aside class="notes">
+						Давайте перейдем к Composition API, и если вы никогда не слышали о том, что это такое, то это API
+						<br><br>
+						next>
+					</aside>
+				</section>
+
+				<!-- slide:5 -->
+				<section>
+					<small align="left">
+						Мы можем создавать реактивное состояние и/или свойства
+					</small>
+					<pre><code class="lang-js" data-trim data-noescape>
+						import { ref } from 'vue'
+
+						const login = ref('')
+						const password = ref('')
+
+						login.value = '@astro.net'
+					</code></pre>
+					<aside class="notes">
+						который позволяет нам создавать автономное реактивное состояние или свойства за пределами нескольких компонентов. потому что в Option API мы были как бы привязаны к области компонента, чтобы иметь некоторое реактивное представление состояния. В представлении 2.6 это немного исправлено, вводя наблюдаемое представление, но оно не было широко использовано, и это было скорее экспериментальное представление, с представлением 3, которое вам действительно не нужно компонент больше для создания реактивного состояния, и когда я говорю о реактивном состоянии, это означает, что изменения этого состояния вызовут изменения, скажем, в отрендеренном шаблоне, здесь мы создаем отдельное свойство, на самом деле два автономных свойства с методом REF, это создаст  два реактивных объекта с одним значением свойства, а затем мы можем
+						<br>
+					</aside>
+				</section>
+
+				<!-- slide:6 -->
+				<section>
+					<small align="left">
+						и используем их в компоненте представления
+					</small>
+					<pre><code class="lang-html" data-trim data-noescape data-line-numbers="3-4,16"><script type="text/template">
+						<template>
+							<form>
+								<input v-model="login" type="text" />
+								<input v-model="password" type="password" />
+							</form>
+						</template>
+						
+						<script>
+							import { ref } from 'vue'
+						
+							export default {
+								setup () {
+									const login = ref('')
+									const password = ref('')
+						
+									return { login, password }
+								}
+							}
+						</scriрt>
+					</script></code></pre>
+					<aside class="notes">
+						использовать их в компонентах представления или за пределами нескольких компонентов, поэтому, если мы хотим использовать их в нашем компоненте представления, нам нужно создать их внутри функции SETUP, которая является новой опцией компонента в  Composition API затем, возвращаем их из настройки, а затем они доступны в шаблоне представления или других параметрах, если мы хотим их использовать, и здесь мы просто создаем два INPUT V-MODEL.  И связываем с этими реактивными свойствами.
+					</aside>
+				</section>
+				
+				<!-- slide:7 -->
+				<section>
+					<span>Мы можем абстрагировать реактивное состояние</span>
+					<aside class="notes">
+						Мы можем абстрагировать реактивное состояние, что это значит, иногда компоненты SETUP в представлении могут сильно раздуваться из-за создания множества реактивных свойств, поэтому было бы неплохо, чтобы они были абстрагированы в автономных файлах javascript
+					</aside>
+				</section>
+
+				<!-- slide:8 -->
+				<section>
+					<pre><code class="lang-js" data-trim data-noescape data-line-numbers><script type="text/template">
+					// useForm.js
+
+					import { ref } from 'vue'
+
+					export function useForm () {
+						const login = ref('')
+						const password = ref('')
+
+						const submitForm = () => {
+							console.log(`User ${login} is logging in`)
+						} 
+			
+						return { login, password, submitForm }
+					}
+					</script></code></pre>
+					<aside class="notes">
+						так как я делаю здесь с формой авторизации, поэтому здесь мы экспортируем форму использования функции, и, насколько я вижу, большинство людей, включая меня, предпочитают называть это компонуемым методом, поэтому форма авторизации здесь является компонуемой, где мы снова создаем два автономных свойства и функцию для отправки формы
+					</aside>
+				</section>
+
+				<!-- slide:9 -->
+				<section>
+					<pre><code class="lang-html" data-trim data-noescape data-line-numbers="10,13"><script type="text/template">
+						<!-- Component.vue -->
+						<template>
+							<form @submit.prevent="submitForm">
+								<input v-model="login" type="text" />
+								<input v-model="password" type="password" />
+								<button type="submit">Submit</button>
+							</form>
+						</template>
+						<script>
+							import { useForm } from './useForm.js'
+							export default {
+								setup () {
+									const { login, password, submitForm } = useForm()
+									return { login, password, submitForm }
+								}
+							}
+						</scriрt>
+					</script></code></pre>
+					<aside class="notes">
+						и мы возвращаем их все для использования в компоненте для представления, поэтому здесь мы импортируем нашу форму использования, она возвращает все, что нам нужно, мы возвращаем ее из настройки да, я знаю эту часть о возврате вещей как объект немного раздражает, но это то, что нам нужно сделать для доступа к свойствам в  шаблоне, и мы можем их использовать.
+					</aside>
+				</section>
+
+				<!-- slide:10 -->
+				<section>
+					<span>Почему мы должны использовать Composition API?</span>
+					<aside class="notes">
+						Этот краткий обзор все еще не отвечает на вопрос, почему мы должны использовать Composition API
+						<br><br>
+						<b>Универсальная логическая композиция (почти подошли API)</b>
+						<br><br>
+						Во Vue 2, у нас было несколько способов логической абстракции и композиции, но это немного борется с гибкой и универсальной комбинацией, поэтому  например, у нас были примеси
+					</aside>
+				</section>
+				
+				<!-- slide:11 -->
+				<section>
+					<pre><code class="lang-js" data-trim data-noescape data-line-numbers><script type="text/template">
+					export const formMixin = {
+						data () {
+							login: '',
+							password: ''
+						},
+						methods: {
+							submitForm () {
+								console.log(`User ${login} is logging in`)
+							}
+						}
+					}
+					</script></code></pre>
+					<aside class="notes">
+						здесь это смешивание, которое создаст два реактивных свойства: логин и пароль, и мы отправим форму, и кажется законным, что она будет работать при импорте в компонент, но что, если я хочу также передать какой-то уникальный параметр
+					</aside>
+				</section>
+
+				<!-- slide:12 -->
+				<section>
+					<pre><code class="lang-js" data-trim data-noescape data-line-numbers="9"><script type="text/template">
+					export const formMixin = {
+						data () {
+							login: '',
+							password: ''
+						},
+						methods: {
+							submitForm () {
+								console.log(
+									formId,
+									`User ${login} is logging in`
+								)
+							}
+						}
+					}
+					</script></code></pre>
+					<aside class="notes">
+						здесь это смешивание, которое создаст два реактивных свойства: логин и пароль, и мы отправим форму, и кажется законным, что она будет работать при импорте в компонент, но что, если я хочу также передать какой-то уникальный параметр, например  я бы сделал с функцией, что, если я хочу передать идентификатор формы, а с простым простым смешиванием это невозможно, они не принимают параметры, они совсем не гибкие, конечно, вы можете сказать, что я могу создать фабрику микширования, но опять же это  создает больше сложностей в логике, чем следовало бы, и она по-прежнему недостаточно гибкая, да
+					</aside>
+				</section>
+
+				<!-- slide:13 -->
+				<section>
+					<pre><code class="lang-html" data-trim data-noescape data-line-numbers><script type="text/template">
+						<template>
+							<form-wrapper :formId="formId">
+								<template #default="{ login, password, submitForm }">
+									<form @submit.prevent="submitForm">
+										<input v-model="login" type="text" />
+										<input v-model="password" type="password" />
+										<button type="submit">Submit</button>
+									</form>
+								</template>
+							</form-wrapper>
+						</template>
+					</script></code></pre>
+					<aside class="notes">
+						другим вариантом было бы создание компонента без бегунов, который предоставляет один слот по умолчанию и через это  слот, в котором мы снова раскрываем свойства из дочернего компонента-оболочки реформы, будет логин-пароль и форма отправки, и мы можем вызывать все, что у нас есть реактивные свойства, и, конечно, мы можем передать здесь идентификатор формы поддержки, поэтому наша идея о гибкости больше не такая проблематичная но действительно ли это универсально?
+					</aside>
+				</section>
+
+				<!-- slide:14 -->
+				<section>
+					<pre><code class="lang-html" data-trim data-noescape data-line-numbers="3,9,11-13"><script type="text/template">
+						<template>
+							<form-wrapper :formId="formId">
+								<template #default="{ login, password, submitForm }">
+									<form @submit.prevent="submitForm">
+										<input v-model="login" type="text" />
+										<input v-model="password" type="password" />
+										<button type="submit">Submit</button>
+									</form>
+								</template>
+							</form-wrapper>
+							<div>
+								{{ login }}
+							</div>
+						</template>
+					</script></code></pre>
+					<aside class="notes">
+						что, если я хочу получить доступ к свойству входа где-то за пределами оболочки формы в шаблоне, и это проблема, потому что с компонентами без рендеринга мы привязаны к среде выполнения, мы не можем получить доступ ко всему, что выставлено из дочернего компонента где-то еще  в шаблоне или, может быть, в параметрах компонента, и это все еще не так универсально, как мы хотим
+					</aside>
+				</section>
+
+				<section>
+					<span>Попробуем решить это с помощью Composition API</span>
+					<aside class="notes">
+						поэтому давайте попробуем решить это с помощью Composition API, давайте попробуем построить гибкую и универсальную абстракцию, и для этого мы будем использовать разные API
+					</aside>
+				</section>
+			</div>
+		</div>
+		<script src="/cdn/reveal/reveal.js"></script>
+		<script src="/cdn/reveal/plugin/zoom/zoom.js"></script>
+		<script src="/cdn/reveal/plugin/notes/notes.js"></script>
+		<script src="/cdn/reveal/plugin/search/search.js"></script>
+		<script src="/cdn/reveal/plugin/markdown/markdown.js"></script>
+		<script src="/cdn/reveal/plugin/highlight/highlight.js"></script>
+		<script>
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				center: true,
+				hash: true,
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+			})
+		</script>
+	</body>
+</html>

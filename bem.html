@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ru">
+	<head>
+		<meta charset="utf-8">
+		<title>BEM | Fedor Garanin - Reports</title>
+		<meta name="description" content="A framework for easily creating beautiful presentations using HTML">
+		<meta name="author" content="Fedor Garanin">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css">
+		<link rel="stylesheet" href="/cdn/reveal/reveal.css">
+		<link rel="stylesheet" href="/cdn/reveal/theme/blood.css" id="theme">
+		<link rel="stylesheet" href="/cdn/reveal/plugin/highlight/monokai.css">
+		<style>
+			* {
+				box-sizing: border-box;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<span><a href="">B</a>lock-name__<a href="">E</a>lement-name_<a href="">M</a>odificator-name</span>
+				</section>
+
+				<section>
+					<ul style="list-style-type: decimal;">
+						<li><a href="">Что такое</a> и с чем едят?</li>
+						<li>Взаимодействие компонентов между собой</li>
+						<li>Связь BEM и <a href="">Astrio PWA</a></li>
+						<li><a href="">n</a>aming + <a href="">c</a>окращения</li>
+					</ul>
+				</section>
+
+				<section>
+					<h4><a href="">Что такое</a> и с чем едят?</h4>
+				</section>
+
+				<section>
+					<h4>Взаимодействие компонентов между собой</h4>
+				</section>
+
+				<section>
+					<h4>Связь BEM и <a href="">Astrio PWA</a></h4>
+				</section>
+
+				<section>
+					<h4><a href="">n</a>aming + <a href="">c</a>окращения</h4>
+				</section>
+
+				<section>
+					<span>Зачем был придуман BEM? Чтоб уйти от каскада.</span>
+				</section>
+				
+				<section>
+					<p>
+						У нас страница состоит из блоков. Независимых блоков. Ее части не есть один большой текст, со стилями что спускаются вниз. Это блоки, что могут и должны иметь возможность переноситься.
+					</p>
+				</section>
+
+				<section>
+					<h6>НЕ BEM:</h6>
+					<ul>
+						<li>длинные строки каскада ради высокой специфичности селекторов - это не та независимость и ни разу не BEM</li>
+						<li>базовые стили и их переопределения ниже от_контекста - как общий стиль вёрстки</li>
+						<li>BEM это не только bemjson, bem-tools и прочее. АНБ - тоже BEM</li>
+					</ul>
+				</section>
+
+				<section>
+					<h6>Главное в BEM - понятие независимого блока.</h6>
+					<p>
+						Независимый блок (НБ или просто блок) это самодостаточный элемент страницы, который при перемещении в другое место на странице или на другую страницу не теряет своей самодостаточности
+					</p>
+				</section>
+
+				<section>
+					<h6>Элементы, модификторы - читаемость</h6>
+				</section>
+
+				<section>
+					<pre><code><script type="text/template">
+<div class="g-app">
+	<div
+		class="g-app__my-element
+					 g-app__my-element_type1_data1 
+					 g-app__my-element_type6_data6
+					 g-app__my-element_type3_data3"
+	>
+		readable't
+	</div>
+</div>
+					</script></code></pre>
+				</section>
+
+				<section>
+					<pre><code><script type="text/template">
+<div class="g-app">
+	<div
+		class="g-app__my-element
+						g-app__my-element--type1--data1 
+						g-app__my-element--type6--data6
+						g-app__my-element--type3--data3"
+	>
+		readable 
+	</div>
+</div>
+					</script></code></pre>
+				</section>
+
+				<section>
+					<small>Синтаксис модификаторов .blockname__elem--mod был запущен в 2012</small>
+				</section>
+
+				<section>
+					<span>Если вам нужно сделать элемент у элемента, значит вам нужно сделать новый блок!</span>
+				</section>
+				
+				<section>
+					<p>Вся проблема - лень делать блок</p>
+				</section>
+
+				<section>
+					Вариацией модификаторов являются "Сокращенные модификаторы" через multiple classes
+					<pre><code><script type="text/template">
+<div class="blockName -mod_val"></div>
+
+.blockName {
+  &.-mod_val {}
+}
+					</script></code></pre>
+				</section>
+
+				<section>
+					<a href="https://gist.github.com/zoxon/6e32de9f0e43910a79df" target="_blank" rel="noopener noreferrer">BEM</a>
+				</section>
+			</div>
+		</div>
+		<script src="/cdn/reveal/reveal.js"></script>
+		<script src="/cdn/reveal/plugin/zoom/zoom.js"></script>
+		<script src="/cdn/reveal/plugin/notes/notes.js"></script>
+		<script src="/cdn/reveal/plugin/search/search.js"></script>
+		<script src="/cdn/reveal/plugin/markdown/markdown.js"></script>
+		<script src="/cdn/reveal/plugin/highlight/highlight.js"></script>
+		<script>
+			Reveal.initialize({
+				slideNumber: true,
+				controls: true,
+				progress: true,
+				center: true,
+				hash: true,
+				plugins: [ RevealZoom, RevealNotes, RevealSearch, RevealMarkdown, RevealHighlight ]
+			})
+		</script>
+	</body>
+</html>
